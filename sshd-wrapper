@@ -1,0 +1,22 @@
+#!/bin/bash
+
+XPWD=${PWD}
+PID_DIR=/var/run/sge-qrsh-setup
+
+if [ ! -d $PID_DIR ]; then
+	mkdir ${PID_DIR} || exit 1
+fi
+
+cd ${PID_DIR}
+
+for p in * ; do
+	if [ -z "$p" ]; then break ; fi
+	kill -0 $p 2>/dev/null || rm -f $p
+done
+
+# Our file name
+echo $XPWD > $$
+
+/usr/sbin/sshd -i
+
+rm -f $OUR_FILE
