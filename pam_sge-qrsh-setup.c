@@ -145,19 +145,19 @@ PAM_EXTERN int pam_sm_close_session(pam_handle_t *pamh,
  * */
 pid_t getppidof(pid_t pid)
 {
-    pid_t ppid;
-    char procpath[MAXPROCPATHLEN];
-    FILE *procstat;
+	pid_t ppid;
+	char procpath[MAXPROCPATHLEN];
+	FILE *procstat;
 
-    snprintf(procpath, MAXPROCPATHLEN, "/proc/%u/stat", pid);
-    procstat = fopen(procpath, "r");
-    if (procstat < 0) {
+	snprintf(procpath, MAXPROCPATHLEN, "/proc/%u/stat", pid);
+	procstat = fopen(procpath, "r");
+	if (procstat < 0) {
 		pam_sge_log(LOG_DEBUG, "Cannot read %s", procpath);
-        return 1;
-    }
-    fscanf(procstat, "%*d %*s %*c %u", &ppid);
-    fclose(procstat);
-    return ppid;
+		return 1;
+	}
+	fscanf(procstat, "%*d %*s %*c %u", &ppid);
+	fclose(procstat);
+	return ppid;
 }
 
 void pam_sge_log(int priority, const char *msg, ...)
